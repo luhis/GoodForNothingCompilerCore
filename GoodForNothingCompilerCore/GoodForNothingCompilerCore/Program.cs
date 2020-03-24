@@ -17,7 +17,7 @@ namespace GoodForNothingCompilerCore
             var moduleName = Path.GetFileNameWithoutExtension(path) + ".exe";
 
             Scanner scanner;
-            using (TextReader input = File.OpenText(path))
+            using (var input = File.OpenText(path))
             {
                 scanner = new Scanner(input);
             }
