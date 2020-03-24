@@ -1,6 +1,8 @@
 ﻿namespace GoodForNothingCompilerCore.Tests
 {
+    using System;
     using System.IO;
+    using System.Text;
     using FluentAssertions;
     using Xunit;
 
@@ -15,11 +17,51 @@
         }
 
         [Fact]
-        public void ScanAllAnIdentifier()
+        public void ScanAnIdentifier()
         {
             var stream = GenerateStreamReaderFromString("_muhCode");
             var scanner = new Scanner(stream);
             scanner.Tokens.Should().BeEquivalentTo(new[] {"_muhCode"});
+        }
+
+        [Fact]
+        public void ScanAStringLiteral()
+        {
+            var stream = GenerateStreamReaderFromString("  \"test\"");
+            var scanner = new Scanner(stream);
+            scanner.Tokens.Should().BeEquivalentTo( new StringBuilder("test"));
+        }
+
+        [Fact]
+        public void ScanANumberLiteral()
+        {
+            var stream = GenerateStreamReaderFromString("  123 ");
+            var scanner = new Scanner(stream);
+            scanner.Tokens.Should().BeEquivalentTo(123);
+        }
+
+        [Fact]
+        public void ScanASemi()
+        {
+            var stream = GenerateStreamReaderFromString("  ; ");
+            var scanner = new Scanner(stream);
+            scanner.Tokens.Should().BeEquivalentTo(ArithToken.Semi);
+        }
+
+        [Fact]
+        public void ScanAnEqual()
+        {
+            var stream = GenerateStreamReaderFromString("  = ");
+            var scanner = new Scanner(stream);
+            scanner.Tokens.Should().BeEquivalentTo(ArithToken.Equal);
+        }
+
+        [Fact]
+        public void ScanACombo()
+        {
+            var stream = GenerateStreamReaderFromString("var x = 2 * 3;");
+            var scanner = new Scanner(stream);
+            scanner.Tokens.Should().BeEquivalentTo(new object[] {"var", "x", ArithToken.Equal, 2, ArithToken.Mul, 3, ArithToken.Semi});
         }
 
         private static StreamReader GenerateStreamReaderFromString(string s)
