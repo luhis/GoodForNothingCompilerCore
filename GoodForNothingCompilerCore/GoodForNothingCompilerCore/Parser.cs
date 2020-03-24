@@ -4,7 +4,7 @@ namespace GoodForNothingCompilerCore
 {
     public class Parser
     {
-        private IEnumerable<object> tokens;
+        private readonly IEnumerable<object> tokens;
 
         public Parser(IEnumerable<object> tokens)
         {
