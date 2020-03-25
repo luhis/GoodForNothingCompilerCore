@@ -43,22 +43,22 @@ namespace GoodForNothingCompilerCore
             {
                 result = ParsePrint();
             }
-            //else if (_tokens[_index].Equals("var"))
-            //{
-            //    result = ParseVar();
-            //}
-            //else if (_tokens[_index].Equals("read_int"))
-            //{
-            //    result = ParseReadInt();
-            //}
-            //else if (_tokens[_index].Equals("read_string"))
-            //{
-            //    result = ParseReadString();
-            //}
-            //else if (_tokens[_index].Equals("for"))
-            //{
-            //    result = ParseForLoop();
-            //}
+            else if (_tokens.ElementAt(_index).Equals("var"))
+            {
+                result = ParseVar();
+            }
+            else if (_tokens.ElementAt(_index).Equals("read_int"))
+            {
+                result = ParseReadInt();
+            }
+            else if (_tokens.ElementAt(_index).Equals("read_string"))
+            {
+                result = ParseReadString();
+            }
+            else if (_tokens.ElementAt(_index).Equals("for"))
+            {
+                result = ParseForLoop();
+            }
             else if (_tokens.ElementAt(_index) is string) // variable assignment
             {
                 result = ParseAssignment();
@@ -74,8 +74,8 @@ namespace GoodForNothingCompilerCore
             if (_index >= _tokens.Count())    // no more to parse
                 return result;
 
-            //if (_tokens[_index].Equals("end")) // end of for-loop NOTE: Can this be moved closer to the "for" part above?
-            //    return result;
+            if (_tokens.ElementAt(_index).Equals("end")) // end of for-loop NOTE: Can this be moved closer to the "for" part above?
+                return result;
 
             return new Sequence(result, ParseNextStmt());
         }
@@ -164,6 +164,90 @@ namespace GoodForNothingCompilerCore
             _index++;
 
             return new Assign(ident, ParseExpr());
+        }
+
+        private Stmt ParseVar()
+        {
+            _index++;
+
+            if (_index >= _tokens.Count() || !(_tokens.ElementAt(_index) is string))
+                throw new Exception("expected variable name after 'var'");
+
+            var ident = (string)_tokens.ElementAt(_index);
+
+            _index++;
+
+            if (_index == _tokens.Count() ||
+                (ArithToken)_tokens.ElementAt(_index) != ArithToken.Equal)
+                throw new Exception($"expected = after 'var {ident}'");
+
+            _index++;
+
+            var expr = ParseExpr();
+            return new DeclareVar(ident, expr);
+        }
+         
+        private Stmt ParseReadInt()
+        {
+            _index++;
+
+            if (_index >= _tokens.Count() || !(_tokens.ElementAt(_index) is string))
+                throw new Exception("expected variable name after 'read_int'");
+
+            return new ReadInt((string)_tokens.ElementAt(_index++));
+        }
+        private Stmt ParseReadString()
+        {
+            _index++;
+
+            if (_index >= _tokens.Count() || !(_tokens.ElementAt(_index) is string))
+                throw new Exception("expected variable name after 'read_string'");
+
+            return new ReadString((string)_tokens.ElementAt(_index++));
+        }
+        private Stmt ParseForLoop()
+        {
+            _index++;
+            var forLoop = new ForLoop();
+
+            if (_index >= _tokens.Count() || !(_tokens.ElementAt(_index) is string))
+                throw new Exception("expected identifier after 'for'");
+
+            forLoop.Ident = (string)_tokens.ElementAt(_index);
+
+            _index++;
+
+            if (_index == _tokens.Count() ||
+                (ArithToken)_tokens.ElementAt(_index) != ArithToken.Equal)
+                throw new Exception("for missing '='");
+
+            _index++;
+
+            forLoop.From = ParseExpr();
+
+            if (_index == _tokens.Count() ||
+                !_tokens.ElementAt(_index).Equals("to"))
+                throw new Exception("expected 'to' after for");
+
+            _index++;
+
+            forLoop.To = ParseExpr();   //TODO: Change compiler - loop ends one step early
+
+            if (_index == _tokens.Count() ||
+                !_tokens.ElementAt(_index).Equals("do"))
+                throw new Exception("expected 'do' after from expression in for loop");
+
+            _index++;
+
+            forLoop.Body = ParseNextStmt();
+
+            if (_index == _tokens.Count() ||
+                !_tokens.ElementAt(_index).Equals("end"))
+                throw new Exception("unterminated 'for' loop body");
+
+            _index++;
+
+            return forLoop;
         }
     }
 }

@@ -15,5 +15,14 @@
             parser.Result.Should().NotBeNull();
             parser.Result.Should().BeEquivalentTo(new Print(new StringLiteral("that's it folks!")));
         }
+
+        [Fact]
+        public void Parse2()
+        {
+            var parser = new Parser(ExampleTokenStreams.Addition);
+            parser.Parse();
+            parser.Result.Should().NotBeNull();
+            parser.Result.Should().BeEquivalentTo(new Print(new StringLiteral("that's it folks!")));
+        }
     }
 }
