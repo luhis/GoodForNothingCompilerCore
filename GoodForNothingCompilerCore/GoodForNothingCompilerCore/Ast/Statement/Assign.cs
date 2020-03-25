@@ -1,5 +1,7 @@
-﻿namespace GoodForNothingCompilerCore.Ast
+﻿namespace GoodForNothingCompilerCore.Ast.Statement
 {
+    using GoodForNothingCompilerCore.Ast.Expression;
+
     public class Assign : Stmt
     {
         public Assign(string ident, Expr expr)

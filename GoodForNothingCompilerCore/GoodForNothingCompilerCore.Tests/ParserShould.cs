@@ -1,7 +1,8 @@
 ﻿namespace GoodForNothingCompilerCore.Tests
 {
     using FluentAssertions;
-    using GoodForNothingCompilerCore.Ast;
+    using GoodForNothingCompilerCore.Ast.Expression;
+    using GoodForNothingCompilerCore.Ast.Statement;
     using Xunit;
 
     public class ParserShould

@@ -1,4 +1,4 @@
-﻿namespace GoodForNothingCompilerCore.Ast
+﻿namespace GoodForNothingCompilerCore.Ast.Expression
 {
     using System;
 

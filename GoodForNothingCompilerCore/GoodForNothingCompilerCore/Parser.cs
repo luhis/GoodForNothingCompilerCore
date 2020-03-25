@@ -6,6 +6,8 @@ using System;
 namespace GoodForNothingCompilerCore
 {
     using System.Text;
+    using GoodForNothingCompilerCore.Ast.Expression;
+    using GoodForNothingCompilerCore.Ast.Statement;
 
     public class Parser
     {
@@ -88,20 +90,20 @@ namespace GoodForNothingCompilerCore
         {
             if (_index == _tokens.Count()) throw new Exception("expected expression, got EOF");
 
-            var nexttoken = _tokens.ElementAt(_index + 1);
+            var nextToken = _tokens.ElementAt(_index + 1);
 
             //check if this is a arithmetic-expr or simple expr
             if (
-                (nexttoken is string && (string)nexttoken == "to") ||   // loop
-                (nexttoken is string && (string)nexttoken == "do") ||   // loop
-                (nexttoken is ArithToken && (ArithToken)nexttoken == ArithToken.Semi)
+                (nextToken is string && (string)nextToken == "to") ||   // loop
+                (nextToken is string && (string)nextToken == "do") ||   // loop
+                (nextToken is ArithToken && (ArithToken)nextToken == ArithToken.Semi)
             )
             {
                 return ParseSimpleExpr();
             }
 
             var binexpr = new ArithExpr();
-            switch ((ArithToken)nexttoken)
+            switch ((ArithToken)nextToken)
             {
                 case ArithToken.Add:
                     binexpr.Op = ArithOp.Add;

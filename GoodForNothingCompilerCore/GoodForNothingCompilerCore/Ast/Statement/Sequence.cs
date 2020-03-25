@@ -1,11 +1,11 @@
-﻿namespace GoodForNothingCompilerCore.Ast
+﻿namespace GoodForNothingCompilerCore.Ast.Statement
 {
     public class Sequence : Stmt
     {
         public Sequence(Stmt first, Stmt second)
         {
-            First = first;
-            Second = second;
+            this.First = first;
+            this.Second = second;
         }
 
         public Stmt First { get; }

@@ -1,5 +1,7 @@
-﻿namespace GoodForNothingCompilerCore.Ast
+﻿namespace GoodForNothingCompilerCore.Ast.Statement
 {
+    using GoodForNothingCompilerCore.Ast.Expression;
+
     public class Print : Stmt
     {
         public Print(Expr expr)
