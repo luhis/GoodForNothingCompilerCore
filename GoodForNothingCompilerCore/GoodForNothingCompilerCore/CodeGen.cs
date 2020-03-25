@@ -2,12 +2,16 @@
 
 namespace GoodForNothingCompilerCore
 {
+    using System.Reflection.Emit;
+    using GoodForNothingCompilerCore.Ast;
+
     public class CodeGen
     {
-        private readonly IEnumerable<object> result;
+        private readonly Stmt result;
         private readonly string moduleName;
+        public static IReadOnlyDictionary<string, LocalBuilder> SymbolTable;
 
-        public CodeGen(IEnumerable<object> result, string moduleName)
+        public CodeGen(Stmt result, string moduleName)
         {
             this.result = result;
             this.moduleName = moduleName;

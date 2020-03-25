@@ -1,11 +1,10 @@
 ﻿using System.IO;
 using System.Collections.Generic;
+using System;
+using System.Text;
 
 namespace GoodForNothingCompilerCore
 {
-    using System;
-    using System.Text;
-
     public class Scanner
     {
         public Scanner(TextReader input)
@@ -50,7 +49,7 @@ namespace GoodForNothingCompilerCore
                 else
                 {
                     // arithmetic tokens such as + - / * =
-                    ScanArith(input, ch);
+                    ScanArith(input);
                 }
             }
         }
@@ -75,9 +74,6 @@ namespace GoodForNothingCompilerCore
 
         private void ScanString(TextReader input)
         {
-            char ch;
-            var accum = new StringBuilder();
-
             input.Read(); // skip the '"'
 
             if (input.IsEmpty())
@@ -85,6 +81,8 @@ namespace GoodForNothingCompilerCore
                 throw new Exception("unterminated string literal");
             }
 
+            char ch;
+            var accum = new StringBuilder();
             while ((ch = input.PeekCh()) != '"')
             {
                 accum.Append(ch);
@@ -122,32 +120,28 @@ namespace GoodForNothingCompilerCore
             Tokens.Add(ArithToken.Semi);
         }
 
-        private void ScanArith(TextReader input, char ch)
+        private void ScanArith(TextReader input)
         {
+            var ch = input.ReadCh();
             switch (ch)
             {
                 case '+':
-                    input.Read();
                     Tokens.Add(ArithToken.Add);
                     break;
                 case '-':
-                    input.Read();
                     Tokens.Add(ArithToken.Sub);
                     break;
                 case '*':
-                    input.Read();
                     Tokens.Add(ArithToken.Mul);
                     break;
                 case '/':
-                    input.Read();
                     Tokens.Add(ArithToken.Div);
                     break;
                 case '=':
-                    input.Read();
                     Tokens.Add(ArithToken.Equal);
                     break;
                 default:
-                    throw new Exception("Scanner encountered unrecognized character '" + ch + "'");
+                    throw new Exception($"Scanner encountered unrecognized character '{ch}'");
             }
         }
     }

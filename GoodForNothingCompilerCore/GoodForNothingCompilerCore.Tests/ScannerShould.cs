@@ -1,6 +1,5 @@
 ﻿namespace GoodForNothingCompilerCore.Tests
 {
-    using System;
     using System.IO;
     using System.Text;
     using FluentAssertions;
@@ -62,6 +61,14 @@
             var stream = GenerateStreamReaderFromString("var x = 2 * 3;");
             var scanner = new Scanner(stream);
             scanner.Tokens.Should().BeEquivalentTo(new object[] {"var", "x", ArithToken.Equal, 2, ArithToken.Mul, 3, ArithToken.Semi});
+        }
+
+        [Fact]
+        public void ScanASimpleApp()
+        {
+            var stream = GenerateStreamReaderFromString("print \"that's it folks!\";");
+            var scanner = new Scanner(stream);
+            scanner.Tokens.Should().BeEquivalentTo(ExampleTokenStreams.PrintThatsItFolks);
         }
 
         private static StreamReader GenerateStreamReaderFromString(string s)
