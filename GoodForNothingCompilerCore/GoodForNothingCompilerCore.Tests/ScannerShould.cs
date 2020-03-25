@@ -71,6 +71,16 @@
             scanner.Tokens.Should().BeEquivalentTo(ExampleTokenStreams.PrintThatsItFolks);
         }
 
+        [Theory]
+        [InlineData("loop.gfn")]
+        [InlineData("helloworld.gfn")]
+        public void ScanTheLoopApp(string fileName)
+        {
+            var app = File.OpenText($"../../../../CodeSamples/{fileName}");
+            var scanner = new Scanner(app);
+            scanner.Tokens.Should().NotBeNull();
+        }
+
         private static StreamReader GenerateStreamReaderFromString(string s)
         {
             var stream = new MemoryStream();
