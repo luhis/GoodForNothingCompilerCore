@@ -88,7 +88,7 @@ namespace GoodForNothingCompilerCore
                 accum.Append(ch);
                 input.Read();
 
-                if (input.Peek() == -1)
+                if (input.IsEmpty())
                 {
                     throw new Exception("unterminated string literal");
                 }
