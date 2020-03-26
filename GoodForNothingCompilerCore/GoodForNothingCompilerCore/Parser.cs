@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System;
-    using System.Linq;
-    using GoodForNothingCompilerCore.Ast;
-
-namespace GoodForNothingCompilerCore
+﻿namespace GoodForNothingCompilerCore
 {
+    using System.Collections.Generic;
+    using System;
+    using System.Linq;
     using System.Text;
     using GoodForNothingCompilerCore.Ast.Expression;
     using GoodForNothingCompilerCore.Ast.Statement;
@@ -32,13 +30,12 @@ namespace GoodForNothingCompilerCore
 
         private Stmt ParseNextStmt()
         {
-            Stmt result = null;
-
             if (_index == _tokens.Count())
             {
                 throw new Exception("expected statement, got EOF");
             }
 
+            Stmt result;
             if (_tokens.ElementAt(_index).Equals("print"))
             {
                 result = ParsePrint();

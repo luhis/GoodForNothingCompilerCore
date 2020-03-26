@@ -1,5 +1,6 @@
 ﻿namespace GoodForNothingCompilerCore.Tests
 {
+    using System;
     using System.IO;
     using System.Text;
     using FluentAssertions;
@@ -32,6 +33,15 @@
         }
 
         [Fact]
+        public void ScanAnUnTerminatedStringLiteral()
+        {
+            var stream = GenerateStreamReaderFromString("  \"test");
+            
+            Action a = () => new Scanner(stream);
+            a.Should().Throw<Exception>().WithMessage("unterminated string literal");
+        }
+
+        [Fact]
         public void ScanANumberLiteral()
         {
             var stream = GenerateStreamReaderFromString("  123 ");
@@ -53,6 +63,14 @@
             var stream = GenerateStreamReaderFromString("  = ");
             var scanner = new Scanner(stream);
             scanner.Tokens.Should().BeEquivalentTo(ArithToken.Equal);
+        }
+
+        [Fact]
+        public void ScanAnUnknown()
+        {
+            var stream = GenerateStreamReaderFromString("  ^ ");
+            Action a = () => new Scanner(stream);
+            a.Should().Throw<Exception>().WithMessage("Scanner encountered unrecognized character '^'");
         }
 
         [Fact]
