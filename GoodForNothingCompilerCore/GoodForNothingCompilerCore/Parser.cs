@@ -91,9 +91,9 @@
 
             //check if this is a arithmetic-expr or simple expr
             if (
-                (nextToken is string && (string)nextToken == "to") ||   // loop
-                (nextToken is string && (string)nextToken == "do") ||   // loop
-                (nextToken is ArithToken && (ArithToken)nextToken == ArithToken.Semi)
+                (nextToken is string token && token == "to") ||   // loop
+                (nextToken is string s && s == "do") ||   // loop
+                (nextToken is ArithToken arithToken && arithToken == ArithToken.Semi)
             )
             {
                 return ParseSimpleExpr();
