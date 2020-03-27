@@ -30,7 +30,7 @@
         [Fact]
         public void FailOnEmpty()
         {
-            var parser = new Parser(new object[] { });
+            var parser = new Parser(Array.Empty<object>());
             Action a = () => parser.Parse();
             a.Should().Throw<Exception>().WithMessage("expected statement, got EOF");
         }

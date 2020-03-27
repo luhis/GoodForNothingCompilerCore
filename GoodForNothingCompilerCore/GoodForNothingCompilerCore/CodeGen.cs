@@ -53,8 +53,8 @@ namespace GoodForNothingCompilerCore
             _il.Emit(OpCodes.Ret);
             _typeBuilder.CreateType();
             _modb.CreateGlobalFunctions();
-            //_asmb.SetEntryPoint(_methb);
-            //_asmb.Save(_moduleName);
+            var generator = new Lokad.ILPack.AssemblyGenerator();
+            generator.GenerateAssembly(_asmb, this._moduleName);
         }
 
         private void GenStmt(Stmt stmt)
@@ -96,7 +96,7 @@ namespace GoodForNothingCompilerCore
             {
                 _il.Emit(OpCodes.Call,
                     typeof(Console).GetMethod("ReadLine", BindingFlags.Public | BindingFlags.Static, null,
-                        new Type[] { }, null));
+                        Array.Empty<Type>(), null));
                 _il.Emit(OpCodes.Call,
                     typeof(int).GetMethod("Parse", BindingFlags.Public | BindingFlags.Static, null,
                         new[] { typeof(string) }, null));
@@ -106,7 +106,7 @@ namespace GoodForNothingCompilerCore
             {
                 _il.Emit(OpCodes.Call,
                     typeof(Console).GetMethod("ReadLine", BindingFlags.Public | BindingFlags.Static, null,
-                        new Type[] { }, null));
+                        Array.Empty<Type>(), null));
                 GenerateStoreFromStack(((ReadString)stmt).Ident, typeof(string));
             }
             else if (stmt is ForLoop)
