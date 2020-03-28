@@ -21,17 +21,15 @@ namespace GoodForNothingCompilerCore
         {
             while (!input.IsEmpty())
             {
-                var ch = input.PeekCh();
+                var ch = input.ReadCh();
 
                 if (char.IsWhiteSpace(ch))
                 {
-                    // eat the current char and skip ahead!
-                    input.Read();
                 }
                 else if (IsIdentifier(ch))
                 {
                     // keyword or identifier
-                    ScanIdent(input);
+                    ScanIdent(input, ch);
                 }
                 else if (ch == '"')
                 {
@@ -51,24 +49,21 @@ namespace GoodForNothingCompilerCore
                 else
                 {
                     // arithmetic tokens such as + - / * =
-                    ScanArith(input);
+                    this.ScanArith(ch);
                 }
             }
         }
 
         private static bool IsIdentifier(char ch) => char.IsLetter(ch) || ch == '_';
 
-        private void ScanIdent(TextReader input)
+        private void ScanIdent(TextReader input, char ch)
         {
-            var accum = new StringBuilder();
-            var ch = input.PeekCh();
+            var accum = new StringBuilder(ch.ToString());
 
-            while (!input.IsEmpty() && IsIdentifier(ch))
+            while (!input.IsEmpty() && IsIdentifier(input.PeekCh()))
             {
+                ch = input.ReadCh();
                 accum.Append(ch);
-                input.ReadCh();
-
-                ch = input.PeekCh();
             }
 
             this._tokens.Add(accum.ToString());
@@ -76,8 +71,6 @@ namespace GoodForNothingCompilerCore
 
         private void ScanString(TextReader input)
         {
-            input.Read(); // skip the '"'
-
             if (input.IsEmpty())
             {
                 throw new Exception("unterminated string literal");
@@ -104,13 +97,12 @@ namespace GoodForNothingCompilerCore
         private void ScanNumber(TextReader input, char ch)
         {
             var accum = new StringBuilder();
+            accum.Append(ch);
 
-            while (!input.IsEmpty() && char.IsDigit(ch))
+            while (!input.IsEmpty() && char.IsDigit(input.PeekCh()))
             {
+                ch = input.ReadCh();
                 accum.Append(ch);
-                input.Read();
-
-                ch = input.PeekCh();
             }
 
             _tokens.Add(int.Parse(accum.ToString()));
@@ -118,13 +110,11 @@ namespace GoodForNothingCompilerCore
 
         private void ScanSemi(TextReader input)
         {
-            input.Read();
             _tokens.Add(ArithToken.Semi);
         }
 
-        private void ScanArith(TextReader input)
+        private void ScanArith(char ch)
         {
-            var ch = input.ReadCh();
             switch (ch)
             {
                 case '+':
