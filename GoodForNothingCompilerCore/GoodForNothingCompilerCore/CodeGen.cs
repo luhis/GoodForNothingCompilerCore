@@ -6,7 +6,6 @@ namespace GoodForNothingCompilerCore
     using System.IO;
     using System.Reflection;
     using System.Reflection.Emit;
-    using GoodForNothingCompilerCore.Ast;
     using GoodForNothingCompilerCore.Ast.Expression;
     using GoodForNothingCompilerCore.Ast.Statement;
 

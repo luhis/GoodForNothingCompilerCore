@@ -37,23 +37,23 @@
 
             Stmt result;
             var currentElement = _tokens.ElementAt(_index);
-            if (currentElement.Equals("print"))
+            if (currentElement.Equals(ReserveWords.Print))
             {
                 result = ParsePrint();
             }
-            else if (currentElement.Equals("var"))
+            else if (currentElement.Equals(ReserveWords.Var))
             {
                 result = ParseVar();
             }
-            else if (currentElement.Equals("read_int"))
+            else if (currentElement.Equals(ReserveWords.Read_int))
             {
                 result = ParseReadInt();
             }
-            else if (currentElement.Equals("read_string"))
+            else if (currentElement.Equals(ReserveWords.Read_string))
             {
                 result = ParseReadString();
             }
-            else if (currentElement.Equals("for"))
+            else if (currentElement.Equals(ReserveWords.For))
             {
                 result = ParseForLoop();
             }
@@ -72,7 +72,7 @@
             if (_index >= _tokens.Count())    // no more to parse
                 return result;
 
-            if (_tokens.ElementAt(_index).Equals("end")) // end of for-loop NOTE: Can this be moved closer to the "for" part above?
+            if (_tokens.ElementAt(_index).Equals(ReserveWords.End)) // end of for-loop NOTE: Can this be moved closer to the "for" part above?
                 return result;
 
             return new Sequence(result, ParseNextStmt());
@@ -92,8 +92,8 @@
 
             //check if this is a arithmetic-expr or simple expr
             if (
-                (nextToken is string token && token == "to") ||   // loop
-                (nextToken is string s && s == "do") ||   // loop
+                (nextToken is string token && token == ReserveWords.To) ||   // loop
+                (nextToken is string s && s == ReserveWords.Do) ||   // loop
                 (nextToken is ArithToken arithToken && arithToken == ArithToken.Semi)
             )
             {

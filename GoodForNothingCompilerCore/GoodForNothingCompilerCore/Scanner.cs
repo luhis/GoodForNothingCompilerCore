@@ -7,7 +7,7 @@ namespace GoodForNothingCompilerCore
 {
     public class Scanner
     {
-        private List<object> _tokens;
+        private readonly List<object> _tokens;
 
         public Scanner(TextReader input)
         {
