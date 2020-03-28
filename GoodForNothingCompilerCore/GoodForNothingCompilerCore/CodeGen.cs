@@ -37,7 +37,7 @@ namespace GoodForNothingCompilerCore
             var asmName = new AssemblyName(filename);
             _asmb = AssemblyBuilder.DefineDynamicAssembly(asmName, AssemblyBuilderAccess.Run);
             _modb = _asmb.DefineDynamicModule(moduleName);
-            _typeBuilder = _modb.DefineType("Foo");
+            _typeBuilder = _modb.DefineType("Program");
 
             _methb = _typeBuilder.DefineMethod("Main", MethodAttributes.Static, typeof(void),
                 Type.EmptyTypes);

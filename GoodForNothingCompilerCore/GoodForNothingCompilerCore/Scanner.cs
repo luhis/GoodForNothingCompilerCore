@@ -7,13 +7,15 @@ namespace GoodForNothingCompilerCore
 {
     public class Scanner
     {
+        private List<object> _tokens;
+
         public Scanner(TextReader input)
         {
-            Tokens = new List<object>();
+            _tokens = new List<object>();
             Scan(input);
         }
 
-        public IList<object> Tokens { get; }
+        public IEnumerable<object> Tokens => this._tokens;
 
         private void Scan(TextReader input)
         {
@@ -69,7 +71,7 @@ namespace GoodForNothingCompilerCore
                 ch = input.PeekCh();
             }
 
-            Tokens.Add(accum.ToString());
+            this._tokens.Add(accum.ToString());
         }
 
         private void ScanString(TextReader input)
@@ -96,7 +98,7 @@ namespace GoodForNothingCompilerCore
 
             // skip the terminating "
             input.Read();
-            Tokens.Add(accum);
+            _tokens.Add(accum);
         }
 
         private void ScanNumber(TextReader input, char ch)
@@ -111,13 +113,13 @@ namespace GoodForNothingCompilerCore
                 ch = input.PeekCh();
             }
 
-            Tokens.Add(int.Parse(accum.ToString()));
+            _tokens.Add(int.Parse(accum.ToString()));
         }
 
         private void ScanSemi(TextReader input)
         {
             input.Read();
-            Tokens.Add(ArithToken.Semi);
+            _tokens.Add(ArithToken.Semi);
         }
 
         private void ScanArith(TextReader input)
@@ -126,19 +128,19 @@ namespace GoodForNothingCompilerCore
             switch (ch)
             {
                 case '+':
-                    Tokens.Add(ArithToken.Add);
+                    _tokens.Add(ArithToken.Add);
                     break;
                 case '-':
-                    Tokens.Add(ArithToken.Sub);
+                    _tokens.Add(ArithToken.Sub);
                     break;
                 case '*':
-                    Tokens.Add(ArithToken.Mul);
+                    _tokens.Add(ArithToken.Mul);
                     break;
                 case '/':
-                    Tokens.Add(ArithToken.Div);
+                    _tokens.Add(ArithToken.Div);
                     break;
                 case '=':
-                    Tokens.Add(ArithToken.Equal);
+                    _tokens.Add(ArithToken.Equal);
                     break;
                 default:
                     throw new Exception($"Scanner encountered unrecognized character '{ch}'");

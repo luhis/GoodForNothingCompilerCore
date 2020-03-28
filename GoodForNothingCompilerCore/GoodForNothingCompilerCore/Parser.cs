@@ -36,33 +36,34 @@
             }
 
             Stmt result;
-            if (_tokens.ElementAt(_index).Equals("print"))
+            var currentElement = _tokens.ElementAt(_index);
+            if (currentElement.Equals("print"))
             {
                 result = ParsePrint();
             }
-            else if (_tokens.ElementAt(_index).Equals("var"))
+            else if (currentElement.Equals("var"))
             {
                 result = ParseVar();
             }
-            else if (_tokens.ElementAt(_index).Equals("read_int"))
+            else if (currentElement.Equals("read_int"))
             {
                 result = ParseReadInt();
             }
-            else if (_tokens.ElementAt(_index).Equals("read_string"))
+            else if (currentElement.Equals("read_string"))
             {
                 result = ParseReadString();
             }
-            else if (_tokens.ElementAt(_index).Equals("for"))
+            else if (currentElement.Equals("for"))
             {
                 result = ParseForLoop();
             }
-            else if (_tokens.ElementAt(_index) is string) // variable assignment
+            else if (currentElement is string) // variable assignment
             {
                 result = ParseAssignment();
             }
             else
             {
-                throw new Exception($"parse error at token {_index}: {_tokens.ElementAt(_index)}");
+                throw new Exception($"parse error at token {_index}: {currentElement}");
             }
 
             _index++;
